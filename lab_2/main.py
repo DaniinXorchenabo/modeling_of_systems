@@ -14,50 +14,12 @@ from fastapi import FastAPI, Path, Query
 from fastapi.responses import RedirectResponse
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from wolframclient.language.expression import WLFunction, WLSymbol
-from wolframclient.utils.packedarray import PackedArray
-from wolframclient.exception import RequestException
+
 
 session: WolframCloudAsyncSession | None = None
 wolfram_code: str | None = None
 
 app = FastAPI()
-
-
-# @app.on_event('startup')
-# async def create_connection_with_wolfram():
-#     global session
-#     last_environ = {key: val for key, val in os.environ.items()}
-#     dotenv_path = join(dirname(__file__), '.env')
-#     load_dotenv(dotenv_path)
-#     try:
-#         key = SecuredAuthenticationKey(
-#             os.environ['CONSUMER_KEY'],
-#             os.environ['CONSUMER_SECRET']
-#         )
-#     except KeyError as e:
-#         raise AttributeError('You should set a CONSUMER_KEY and CONSUMER_SECRET environ variables.\n'
-#                              'See a example.env file for more information.')
-#     session = WolframCloudAsyncSession(credentials=key)
-#     await session.start()
-#     print(session.authorized())
-#
-#     print('wolfram authorized')
-#     # res = await session.evaluate('ImageIdentify[ First[ WebImageSearch["bird","Images",1] ] ]')
-#     # print(res)
-
-
-# @app.on_event('startup')
-# async def get_wolfram_code_from_file():
-#     global wolfram_code
-#     with open('code.nb', 'r', encoding='utf-8') as f:
-#         wolfram_code = f.read()
-
-
-# @app.on_event('shutdown')
-# async def create_connection_with_wolfram():
-#     global session
-#     await session.stop()
 
 
 def func(
