@@ -22,6 +22,14 @@ const get_data_for_graph = data => {
 };
 
 
+const formatting_graph_data = data => {
+    const formatted_data = [{}, {}, {}, {}, {}];
+    const some_data = [...Object.entries(data)]
+                        .map(([key, data_list]) => [...data_list]
+        .map((x, index) => {formatted_data[index][key] = x; return x;}));
+    return formatted_data
+};
+
 const draw_table = (data) => {
     document.getElementById("result_table").innerHTML = `
                 <caption>Уплотнённая таблица</caption>

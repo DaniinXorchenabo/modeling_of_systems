@@ -2,64 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Лабораторная работа по вычислительным алгоритмам № 5</title>
+    <title>Лабораторная работа по моделированию систем № 2</title>
     <script defer src="https://cdn.plot.ly/plotly-2.6.3.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script defer src="scripts/draw_formula.js"></script>
     <script defer src="scripts/graph.js"></script>
     <script defer src="scripts/data_processing.js"></script>
     <script defer src="scripts/to_server.js"></script>
+    <script defer src="scripts/input_data.js"></script>
 
     <link rel="stylesheet" href="styles/base_styles.css">
     <link rel="stylesheet" href="styles/layout_stiles.css">
     <link rel="stylesheet" href="styles/table_stiles.css">
 
 
+
 </head>
 <body>
 
-<h1>Лабораторная работа по вычислительным алгоритмам № 5</h1>
+<h1>Лабораторная работа по моделированию систем № 2</h1>
 
 
 <div class="parent_box">
 
     <div class="child input_box_parent" id="matrix_content">
         <div class="array_box">
-            <h2>Полученная формула интерполяционного многочлена Лагранжа</h2>
-            <p id="Lagrangian_formula">$${0}$$</p>
+            <h2>Введите шаг</h2>
+            <div class="input_box">
+                <test>h</test>
+                <input id="input_setup" value="0.01"
+                       oninput="correcting_number(event)"
+                       onchange="corrected_number(event)"
+                       placeholder="Положительное число с плавающей точкой, не более 14">
+            </div>
+            <div class="input_box">
+                <button id="send_button">Посчитать</button>
+            </div>
+            <div class='input_box'>
+                <text>Последнее значение x4: </text>
+                <text id="task_1_x4"></text>
+            </div>
+            <div class='input_box'>
+                <text>Значение дельты </text>
+                <text id="task_1_delta"></text>
+            </div>
             <div id="graph_task1"></div>
-
-
         </div>
         <div class="array_box">
             <h2>Задание 2 </h2>
-            <div class='input_box'>
-                <text>Вычисленное значение для промежуточного аргумента:</text>
-                <text id="task_2_a"></text>
-            </div>
-            <div class='input_box'>
-                <text>При этом равенство</text>
-                <text id="task_2_R"></text>
-                <text> выполняется</text>
-            </div>
+
             <div id="graph_task2"></div>
         </div>
         <div class="array_box">
             <h2>Задание 3 </h2>
             <div class='input_box'>
-                <text>Погрешность интерполяции D: </text>
-                <text id="task_3_D"></text>
+                <text>Последнее значение x4: </text>
+                <text id="task_3_x4"></text>
+            </div>
+            <div class='input_box'>
+                <text>Значение дельты </text>
+                <text id="task_3_delta"></text>
             </div>
             <div id="graph_task3"></div>
         </div>
+<!--        <div class="array_box">-->
+<!--            <h2>Задание 3 </h2>-->
+<!--            <div class='input_box'>-->
+<!--                <text>Погрешность интерполяции D: </text>-->
+<!--                <text id="task_3_D"></text>-->
+<!--            </div>-->
+<!--            <div id="graph_task3"></div>-->
+<!--        </div>-->
     </div>
 
 </div>
 
-<div class="table_box">
-    <table id="result_table">
-
-    </table>
-</div>
 </body>
 </html>

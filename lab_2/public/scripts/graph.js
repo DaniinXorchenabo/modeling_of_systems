@@ -42,7 +42,10 @@ const draw_graph = (data_for_graph, graph_id, sort_data, data_from_server, graph
 
     let graph_data =[
         {mode: 'lines', line: {color: "#fc7e0d"}},
-        {mode: 'lines', line: {color: "#ac0dfc"}}
+        {mode: 'lines', line: {color: "#ac0dfc"}},
+        {mode: 'lines', line: {color: "#41fc0d"}},
+        {mode: 'lines', line: {color: "#0d90fc"}},
+        {mode: 'lines', line: {color: "#fc0d94"}}
     ];
 
     // const raw_data = data_for_graph;
