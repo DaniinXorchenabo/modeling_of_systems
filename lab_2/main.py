@@ -1,7 +1,10 @@
 import os
+# from datetime import time
 from math import sin
 from os.path import dirname, join, split
 import asyncio
+from time import time
+
 import uvicorn
 from decimal import Decimal
 from typing import Any
@@ -21,6 +24,8 @@ wolfram_code: str | None = None
 
 app = FastAPI()
 
+def eller_m(last_y, h, y):
+    return last_y + h*y
 
 def func(
         h,
@@ -41,12 +46,12 @@ def func(
     results = {float(0): x_last}
     for t in (i * h for i in range(round(T / h))):
         x_next = [0] * 5
-        x_next[0] = -g * sin(x_last[1]) + (p - a * c_x * x_last[0] ** 2) / (m - u * t)
-        x_next[1] = (-g + (p * sin(x_last[4] - x_last[1]) + a * c_y * x_last[0] ** 2) / (m - u * t)) / x_last[0]
-        x_next[2] = (m1 * a * (x_last[1] - x_last[4]) * x_last[0] ** 2 - m2 * a * x_last[0] ** 2 * x_last[2]) / (
-                m - u * t)
-        x_next[3] = x_last[0] * sin(x_last[1])
-        x_next[4] = x_last[2]
+        x_next[0] = eller_m(x_last[0], h, -g * sin(x_last[1]) + (p - a * c_x * x_last[0] ** 2) / (m - u * t))
+        x_next[1] = eller_m(x_last[1], h,(-g + (p * sin(x_last[4] - x_last[1]) + a * c_y * x_last[0] ** 2) / (m - u * t)) / x_last[0])
+        x_next[2] = eller_m(x_last[2], h,(m1 * a * (x_last[1] - x_last[4]) * x_last[0] ** 2 - m2 * a * x_last[0] ** 2 * x_last[2]) / (
+                m - u * t))
+        x_next[3] = eller_m(x_last[3], h,x_last[0] * sin(x_last[1]))
+        x_next[4] = eller_m(x_last[4], h,x_last[2])
         results[t] = x_last
         x_last = x_next
     results[float(T)] = x_next
@@ -63,10 +68,13 @@ async def test(
         h: Decimal = Query(1),
         T: int = Query(14),
 ):
+    d = time()
     results = dict()
     results["task1"] = {"graph": func(h, T=T)}
+    print(time() - d)
     results["task1"]["delta"] = get_delta(results["task1"]["graph"], h, T)
     results["task1"]['target_variable'] = results["task1"]["graph"][T][3]
+
     return results
 
 
@@ -98,7 +106,7 @@ async def test(
         h /= 2
         graph_data = func(h, T=T)
         delta = get_delta(graph_data, h, T)
-
+    print(h)
     result = {"task3": {"graph": graph_data, "delta": delta, 'target_variable': graph_data[T][3]}}
     return result
 
