@@ -49,7 +49,7 @@ i = 0
 while True:
     out = output_rules[curr_state]
     curr_state = rules[curr_state]
-    print(out, curr_state)
+    print(f"Вывод: {out}, текущее состояние: {curr_state}")
     if i >= max_iteration:
         break
     i += 1
