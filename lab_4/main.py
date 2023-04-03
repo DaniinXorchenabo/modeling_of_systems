@@ -123,6 +123,7 @@ inp = {
     InputE.i2: 0.5
 }
 
+
 def get_random_val(data: dict[enum.Enum, float]):
     last = 0.0
     curr = 0.0
@@ -133,7 +134,7 @@ def get_random_val(data: dict[enum.Enum, float]):
         curr += v
         if last <= random_val < curr:
             return k
-    return   curr_k
+    return curr_k
 
 
 def input_generator():
@@ -143,11 +144,10 @@ def input_generator():
         yield get_random_val(inp)
         i += 1
 
+
 curr_state = get_random_val(init_C)
 
-
-for i in  input_generator():
+for i in input_generator():
     out = get_random_val(B[i][curr_state])
     curr_state = get_random_val(A[i][curr_state])
     print(f"Вход {i}, вывод: {out}, текущее состояние: {curr_state}")
-
