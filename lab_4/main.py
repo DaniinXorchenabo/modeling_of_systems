@@ -124,17 +124,17 @@ inp = {
 }
 
 
-def get_random_val(data: dict[enum.Enum, float]):
+def get_random_val(data: dict[enum.Enum, float], random_val=None):
     last = 0.0
     curr = 0.0
-    random_val = random.random()
+    random_val = random_val or random.random()
     curr_k = None
     for k, v in data.items():
         curr_k = k
         curr += v
         if last <= random_val < curr:
-            return k
-    return curr_k
+            return k, random_val
+    return curr_k, random_val
 
 
 def input_generator():
@@ -145,9 +145,21 @@ def input_generator():
         i += 1
 
 
-curr_state = get_random_val(init_C)
-
-for i in input_generator():
-    out = get_random_val(B[i][curr_state])
-    curr_state = get_random_val(A[i][curr_state])
-    print(f"Вход {i}, вывод: {out}, текущее состояние: {curr_state}")
+curr_state, v = get_random_val(init_C)
+print('x'.rjust(10) + "|"
+      + 'z_old'.rjust(10) + '|'
+      + 'r_1'.rjust(10) + '|'
+      + 'z_new'.rjust(10) + '|'
+      + 'r_2'.rjust(10) + '|'
+      + 'y'.rjust(10) + '|')
+for (i, inp_v) in input_generator():
+    out, v = get_random_val(B[i][curr_state])
+    old_state = curr_state
+    curr_state, v = get_random_val(A[i][curr_state], random_val=v)
+    print(str(i).rjust(10) + "|"
+          + str(old_state).rjust(10) + '|'
+          + str(round(inp_v, 2)).rjust(10) + '|'
+          + str(curr_state).rjust(10) + '|'
+          + str(round(v, 2)).rjust(10) + '|'
+          + str(out).rjust(10) + '|')
+    # print(f"Вход {i}, вывод: {out}, текущее состояние: {curr_state}")
