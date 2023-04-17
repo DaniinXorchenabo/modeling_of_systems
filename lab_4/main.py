@@ -146,20 +146,40 @@ def input_generator():
 
 
 curr_state, v = get_random_val(init_C)
-print('x'.rjust(10) + "|"
-      + 'z_old'.rjust(10) + '|'
-      + 'r_1'.rjust(10) + '|'
-      + 'z_new'.rjust(10) + '|'
-      + 'r_2'.rjust(10) + '|'
-      + 'y'.rjust(10) + '|')
+print('x'.rjust(12) + "|"
+      + 'z_old'.rjust(12) + '|'
+      + 'r_1'.rjust(12) + '|'
+      + 'z_new'.rjust(12) + '|'
+      + 'r_2'.rjust(12) + '|'
+      + 'y'.rjust(12) + '|')
+statistic_dict_inp = dict()
+statistic_dict_state = dict()
+statistic_dict_out = dict()
 for (i, inp_v) in input_generator():
     out, v = get_random_val(B[i][curr_state])
+    statistic_dict_inp[i] = statistic_dict_inp.get(i, 0) + 1
+    statistic_dict_state[curr_state] = statistic_dict_state.get(curr_state, 0) + 1
+    statistic_dict_out[out] = statistic_dict_out.get(out, 0) + 1
+
     old_state = curr_state
     curr_state, v = get_random_val(A[i][curr_state], random_val=v)
-    print(str(i).rjust(10) + "|"
-          + str(old_state).rjust(10) + '|'
-          + str(round(inp_v, 2)).rjust(10) + '|'
-          + str(curr_state).rjust(10) + '|'
-          + str(round(v, 2)).rjust(10) + '|'
-          + str(out).rjust(10) + '|')
+    print(str(i).rjust(12) + "|"
+          + str(old_state).rjust(12) + '|'
+          + str(round(inp_v, 2)).rjust(12) + '|'
+          + str(curr_state).rjust(12) + '|'
+          + str(round(v, 2)).rjust(12) + '|'
+          + str(out).rjust(12) + '|')
     # print(f"Вход {i}, вывод: {out}, текущее состояние: {curr_state}")
+
+print('_' * 40)
+print(*[str(k).rjust(12) + '|' for k, v in statistic_dict_inp.items()], sep='')
+print(*[str(round(v / sum(statistic_dict_inp.values()), 2)).rjust(12) + '|' for k, v in statistic_dict_inp.items()],
+      sep='')
+print('_' * 40)
+print(*[str(k).rjust(12) + '|' for k, v in statistic_dict_state.items()], sep='')
+print(*[str(round(v / sum(statistic_dict_state.values()), 2)).rjust(12) + '|' for k, v in statistic_dict_state.items()],
+      sep='')
+print('_' * 65)
+print(*[str(k).rjust(12) + '|' for k, v in statistic_dict_out.items()], sep='')
+print(*[str(round(v / sum(statistic_dict_out.values()), 2)).rjust(12) + '|' for k, v in statistic_dict_out.items()],
+      sep='')
