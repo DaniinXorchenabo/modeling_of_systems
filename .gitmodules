@@ -1,0 +1,4 @@
+[submodule "lab_5/gauss"]
+	path = lab_5/gauss
+	url = https://github.com/DaniinXorchenabo/math_programming_methods
+	branch = modeling_systems_version
