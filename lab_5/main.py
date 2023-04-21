@@ -4,13 +4,19 @@ from lab_5.gauss.labs_2_3_and_4.enums import SolutionMethodMods, Sign, ExprType,
 from lab_5.gauss.labs_2_3_and_4.builder import expr_system_builder
 
 
-def eller_m(last_y, h, y):
-    return last_y + h * y
+def eller_m(last_y, h, ys, func):
+    return last_y + h * func(ys)
 
+def runge_kutta_method(last_y, t,  ys, func):
+    k1 = func(ys)
+    k2 = func([  ((i + (t*k1/2)) if i == last_y else i) for i in ys])
+    k3 = func([  ((i + (t * k2 / 2)) if i == last_y else i) for i in ys])
+    k4 = func([  ((i + (t * k3)) if i == last_y else i) for i in ys])
+    return last_y + t*(1/6*k1 + 1/3*k2 + 1/3*k3 + 1/6*k4)
 
 def func(
         h,
-        T=10
+        T=20
 ):
     h = float(h)
     x_last = [0, 0, 0, 1]
@@ -18,10 +24,10 @@ def func(
     results = {float(0): x_last}
     for t in (i * h for i in range(round(T / h))):
         x_next = [0] * 4
-        x_next[0] = eller_m(x_last[0], h, x_last[1] + x_last[2] - 2 * x_last[0])
-        x_next[1] = eller_m(x_last[1], h, 2 * x_last[2] + 2 * x_last[3] - 1 * x_last[1])
-        x_next[2] = eller_m(x_last[2], h, 4 * x_last[3] - 3 * x_last[2])
-        x_next[3] = eller_m(x_last[3], h, 2 * x_last[0] - 6 * x_last[3])
+        x_next[0] = runge_kutta_method(x_last[0], h, x_last, lambda ys:  ys[1] + ys[2] - 2 * ys[0])
+        x_next[1] = runge_kutta_method(x_last[1], h, x_last, lambda ys: 2 * ys[2] + 2 * ys[3] - 1 * ys[1])
+        x_next[2] = runge_kutta_method(x_last[2], h, x_last, lambda ys: 4 * ys[3] - 3 * ys[2])
+        x_next[3] = runge_kutta_method(x_last[3], h, x_last, lambda ys: 2 * ys[0] - 6 * ys[3])
         results[round(t, 6)] = x_last
         x_last = x_next
     results[round(float(T), 6)] = x_next
@@ -31,7 +37,7 @@ def func(
 print(*[
     (str(k).rjust(10) + '|' + '|'.join(
         [str(round(i, 6)).rjust(10) for i in v]
-    )) for k, v in func(0.001).items()], sep='\n')
+    )) for k, v in func(0.0001).items()], sep='\n')
 
 ExprSystem, Expression, Variables, *_ = expr_system_builder()
 ex_sys = ExprSystem(
@@ -48,3 +54,4 @@ ex_sys.run()
 
 print('Конечный результат --------------------------')
 print(ex_sys)
+print([i.value for i in Variables.nodes_dict['b']])
